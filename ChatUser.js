@@ -50,7 +50,6 @@ class ChatUser {
   showMembers() {
     let roomMembers = this.room.getMembersArray();
     let namesString = roomMembers.reduce((acc, name, i) => {
-      console.log(i)
       if (i === 0) {
         return acc + `${name}`;
       }
