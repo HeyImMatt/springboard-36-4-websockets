@@ -47,6 +47,21 @@ class ChatUser {
     });
   }
 
+  showMembers() {
+    let roomMembers = this.room.getMembersArray();
+    let namesString = roomMembers.reduce((acc, name, i) => {
+      console.log(i)
+      if (i === 0) {
+        return acc + `${name}`;
+      }
+      if (roomMembers.length > 1 && i === roomMembers.length - 1) {
+        return acc + ` and ${name}`;
+      }
+      return acc + `, ${name}`;
+    }, 'Room Members: ')
+    this.room.privateBroadcast(this.name, namesString);
+  }
+
   /** Handle messages from client:
    *
    * - {type: "join", name: username} : join
@@ -57,6 +72,7 @@ class ChatUser {
     let msg = JSON.parse(jsonData);
 
     if (msg.type === 'join') this.handleJoin(msg.name);
+    else if (msg.text === '/members') this.showMembers();
     else if (msg.type === 'chat') this.handleChat(msg.text);
     else throw new Error(`bad message: ${msg.type}`);
   }

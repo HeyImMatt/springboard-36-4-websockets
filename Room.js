@@ -44,11 +44,30 @@ class Room {
     this.members.delete(member);
   }
 
+  getMembersArray() {
+    let roomMembers = [];
+    for (let member of this.members) {
+      roomMembers.push(member.name)
+    }
+    return roomMembers;
+  }
+
   /** send message to all members in a room. */
 
   broadcast(data) {
     for (let member of this.members) {
       member.send(JSON.stringify(data));
+    }
+  }
+
+  privateBroadcast(memberName, data) {
+    for (let member of this.members) {
+      if (member.name === memberName) {
+        member.send(JSON.stringify({
+          type: 'note',
+          text: `${data}`
+        }));
+      }
     }
   }
 }
